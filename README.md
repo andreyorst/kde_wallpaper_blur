@@ -1,6 +1,6 @@
 # KDE Wallpaper Blur
 
-This script automatically detects when you change wallaper in KDE Plasma, blurs it, and sets it to your lockscreen and SDDM.
+This script automatically detects when you change wallpaper in KDE Plasma, blurs it, and sets it to your lockscreen and SDDM.
 
 ![Automatic Wallpaper Blur](demonstration.gif)
 
@@ -9,7 +9,8 @@ This script automatically detects when you change wallaper in KDE Plasma, blurs 
 You will need package `inotify-tools`. Arch linux users can install it via `pacman -S inotify-tools`. Other distros may include it by default.
 
 ```bash
-$ git clone https://github.com/andreyorst/kde_wallpaper_blur.git ~/.kde_wallpaper_blur; cd ~/.kde_wallpaper_blur
+$ git clone https://github.com/andreyorst/kde_wallpaper_blur.git ~/.kde_wallpaper_blur
+$ cd ~/.kde_wallpaper_blur
 $ ./setup.sh # requires root access
 ```
 
@@ -19,3 +20,7 @@ No further manipulations should be needed, but if you run into some kind of trou
 Installation script will create backup files called \*.prewpblur in various places. Check out script output.
 
 This software comes with no warranty.
+
+---
+
+Special thanks to [@agura-lex](https://github.com/agura-lex), for his patience and bash guidance
