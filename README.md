@@ -13,8 +13,8 @@ $ git clone https://github.com/andreyorst/kde_wallpaper_blur.git ~/.kde_wallpape
 $ ./setup.sh # requires root access
 ```
 
-Installation script will create image called `.bg.png` in your `$HOME` dir, and copy it to your current sddm theme folder. Then the blur script will be set to autostart.
-No further manipulations should be needed, but if you run into trouble, open issue with step by step guide how to reproduce it.
+Installation script will create image called `.bg.png` in your `$HOME` dir, and copy it to your current sddm theme folder. Then the blur script will be set to autostart, and started for current session.
+No further manipulations should be needed, but if you run into some kind of trouble, please open issue with step by step guide how to reproduce it.
 
 Installation script will create backup files called \*.prewpblur in various places. Check out script output.
 
