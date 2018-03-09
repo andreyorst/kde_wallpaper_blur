@@ -2,6 +2,13 @@
 
 # I AM BASH NOOB PLS DONT PUNCH ME HARD
 
+INOTIFY_TOOLS_PATH="/usr/bin/inotifywait"
+
+if ! test -f "$INOTIFY_TOOLS_PATH" ; then
+    echo inotify-tools not found on your system, please install inotify-tools package.
+    exit
+fi
+
 CURRENT_WP_PATH=$(cat ~/.config/plasma-org.kde.plasma.desktop-appletsrc | grep -E "^Image=(file)?" | sed -E 's/Image=(file:\/\/)?//')
 
 if ! test -f ~/.bg.png; then
