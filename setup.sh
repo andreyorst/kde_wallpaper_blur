@@ -21,10 +21,10 @@ CURRENT_WP_PATH=$(cat ~/.config/plasma-org.kde.plasma.desktop-appletsrc | grep -
 
 
 if ! test -f ~/.bg.png; then
-    if [ $CURRENT_WP_PATH ]; then
+    if [ "$CURRENT_WP_PATH" ]; then
         echo blurring your current wallpaper
         echo
-        convert $CURRENT_WP_PATH -filter Gaussian -resize 5% -define filter:sigma=2.5 -resize 2000% -attenuate 0.2 +noise Gaussian ~/.bg.png
+        convert "$CURRENT_WP_PATH" -filter Gaussian -resize 5% -define filter:sigma=2.5 -resize 2000% -attenuate 0.2 +noise Gaussian ~/.bg.png
         sleep 10
     else
         PROMPT=1
