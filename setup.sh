@@ -9,7 +9,7 @@ if ! test -f "$INOTIFY_TOOLS_PATH" ; then
     exit
 fi
 
-CURRENT_WP_PATH=$(cat ~/.config/plasma-org.kde.plasma.desktop-appletsrc | grep -E "^Image=(file)?" | sed -E 's/Image=(file:\/\/)?//')
+CURRENT_WP_PATH=$(cat ~/.config/plasma-org.kde.plasma.desktop-appletsrc | grep -E "^Image=(file)?" | head -n 1 | sed -E 's/Image=(file:\/\/)?//')
 
 if ! test -f ~/.bg.png; then
     if [ $CURRENT_WP_PATH ]; then
