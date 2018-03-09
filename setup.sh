@@ -11,7 +11,7 @@ fi
 
 
 CURRENT_WP_PATH=$(cat ~/.config/plasma-org.kde.plasma.desktop-appletsrc | grep -E "^Image=(file)?" | head -n 1 | sed -E 's/Image=(file:\/\/)?//')
-=======
+
 if ! test -f "$BIN_PATH/convert" ; then
     echo convert not found on your system, please install imagemagick package.
     exit
