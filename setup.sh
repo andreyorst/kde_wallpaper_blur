@@ -11,6 +11,7 @@ if ! test -f ~/.bg.png; then
         convert $CURRENT_WP_PATH -filter Gaussian -resize 5% -define filter:sigma=2.5 -resize 2000% -attenuate 0.2 +noise Gaussian ~/.bg.png
         sleep 10
     else
+        PROMPT=1
         echo creating dummy .bg.png in $HOME
         echo
         touch ~/.bg.png
@@ -76,3 +77,13 @@ $KSCREENLOCKER.prewpblur
 
 EOF
 
+if ! pgrep -x "wpblur.sh" > /dev/null; then
+    echo starting script for current session
+	./wpblur.sh &
+fi
+
+if [ $PROMPT ]; then
+    echo now please change your wallpaper
+else
+    echo ready to use
+fi

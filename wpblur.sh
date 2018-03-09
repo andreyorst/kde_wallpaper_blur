@@ -1,4 +1,10 @@
 #!/bin/bash
+
+if [ $(pidof -x wpblur.sh| wc -w) -gt 2 ]; then
+	echo wpblur already running, exiting
+    exit 1
+fi
+
 while true; do
     inotifywait -q ~/.config/plasma-org.kde.plasma.desktop-appletsrc -e delete_self -e open | while read; do
         sleep 2
