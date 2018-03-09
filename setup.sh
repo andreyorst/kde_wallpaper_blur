@@ -21,11 +21,11 @@ fi
 SDDM_THEME_PATH=/usr/share/sddm/themes/$(cat /etc/sddm.conf | grep 'Current' | sed -E 's/.*=//')
 
 if ! test -f $SDDM_THEME_PATH/.bg.png; then
-    echo copying .bg.png to $SDDM_THEME_PATH
+    echo creating symlink to .bg.png in $SDDM_THEME_PATH
     echo
-    sudo cp ~/.bg.png $SDDM_THEME_PATH/.bg.png
+    sudo ln -sf ~/.bg.png $SDDM_THEME_PATH/.bg.png
 fi
-sudo chmod 777 $SDDM_THEME_PATH/.bg.png
+sudo chmod 777 ~/.bg.png
 
 echo creating sddm config
 cat $SDDM_THEME_PATH/theme.conf.user | sed -E 's/background=.*/background=.bg.png/' | sed -E 's/type=.*/type=image/' >> /tmp/theme.conf.user
@@ -79,7 +79,7 @@ EOF
 
 if ! pgrep -x "wpblur.sh" > /dev/null; then
     echo starting script for current session
-	./wpblur.sh &
+    $(pwd)/wpblur.sh &
 fi
 
 if [ $PROMPT ]; then
