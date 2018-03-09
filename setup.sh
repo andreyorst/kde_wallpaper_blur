@@ -4,8 +4,6 @@
 
 CURRENT_WP_PATH=$(cat ~/.config/plasma-org.kde.plasma.desktop-appletsrc | grep -E "^Image=(file)?" | sed -E 's/Image=(file:\/\/)?//')
 
-echo $CURRENT_WP_PATH
-
 if ! test -f ~/.bg.png; then
     if [ $CURRENT_WP_PATH ]; then
         echo blurring your current wallpaper
@@ -13,7 +11,6 @@ if ! test -f ~/.bg.png; then
         convert $CURRENT_WP_PATH -filter Gaussian -resize 5% -define filter:sigma=2.5 -resize 2000% -attenuate 0.2 +noise Gaussian ~/.bg.png
         sleep 10
     else
-        PROMPT=1
         echo creating dummy .bg.png in $HOME
         echo
         touch ~/.bg.png
@@ -29,7 +26,7 @@ if ! test -f $SDDM_THEME_PATH/.bg.png; then
 fi
 sudo chmod 777 $SDDM_THEME_PATH/.bg.png
 
-echo creating sddm config\n
+echo creating sddm config
 cat $SDDM_THEME_PATH/theme.conf.user | sed -E 's/background=.*/background=.bg.png/' | sed -E 's/type=.*/type=image/' >> /tmp/theme.conf.user
 sudo mv $SDDM_THEME_PATH/theme.conf.user $SDDM_THEME_PATH/theme.conf.user.prewpblur
 sudo mv /tmp/theme.conf.user $SDDM_THEME_PATH/
@@ -63,15 +60,14 @@ if ! test -d ~/.config/autostart-scripts; then
     mkdir ~/.config/autostart-scripts
 fi
 
-if ! test -f ~/.config/autostart-scripts/wpblur.sh; then
-    echo enabling script autostart
-    echo
-    cp ./wpblur.sh ~/.config/autostart-scripts/wpblur.sh
+if test -f ~/.config/autostart-scripts/wpblur.sh; then
+    rm ~/.config/autostart-scripts/wpblur.sh
 fi
 
-echo starting script for current session
+echo enabling script autostart
 echo
-./wpblur.sh &
+ln -sf $(pwd)/wpblur.sh ~/.config/autostart-scripts/wpblur.sh
+echo script will start automatically upon next login
 
 cat <<EOF
 Backups created:
@@ -80,8 +76,3 @@ $KSCREENLOCKER.prewpblur
 
 EOF
 
-if [ $PROMPT ]; then
-    echo now please change your wallpaper
-else
-    echo ready to use
-fi
