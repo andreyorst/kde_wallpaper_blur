@@ -2,7 +2,7 @@
 
 This script automatically detects when you change wallaper in KDE Plasma, blurs it, and sets it to your lockscreen and SDDM.
 
-![Automatic Wallpaper Blur](https://i.imgur.com/i28O8ikl.gif)
+![Automatic Wallpaper Blur](demonstration.gif)
 
 ### Installation
 
