@@ -2,10 +2,15 @@
 
 # I AM BASH NOOB PLS DONT PUNCH ME HARD
 
-INOTIFY_TOOLS_PATH="/usr/bin/inotifywait"
+BIN_PATH="/usr/bin"
 
-if ! test -f "$INOTIFY_TOOLS_PATH" ; then
+if ! test -f "$BIN_PATH/inotifywait" ; then
     echo inotify-tools not found on your system, please install inotify-tools package.
+    exit
+fi
+
+if ! test -f "$BIN_PATH/convert" ; then
+    echo convert not found on your system, please install imagemagick package.
     exit
 fi
 
