@@ -9,16 +9,12 @@ if ! test -f "$BIN_PATH/inotifywait" ; then
     exit
 fi
 
-
-CURRENT_WP_PATH=$(cat ~/.config/plasma-org.kde.plasma.desktop-appletsrc | grep -E "^Image=(file)?" | head -n 1 | sed -E 's/Image=(file:\/\/)?//')
-
 if ! test -f "$BIN_PATH/convert" ; then
     echo convert not found on your system, please install imagemagick package.
     exit
 fi
 
-CURRENT_WP_PATH=$(cat ~/.config/plasma-org.kde.plasma.desktop-appletsrc | grep -E "^Image=(file)?" | sed -E 's/Image=(file:\/\/)?//')
-
+CURRENT_WP_PATH=$(cat ~/.config/plasma-org.kde.plasma.desktop-appletsrc | grep -E "^Image=(file)?" | head -n 1 | sed -E 's/Image=(file:\/\/)?//')
 
 if ! test -f ~/.bg.png; then
     if [ "$CURRENT_WP_PATH" ]; then
