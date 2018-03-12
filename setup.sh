@@ -30,30 +30,30 @@ if ! test -f ~/.bg.png; then
     fi
 fi
 
-SDDM_THEME_PATH=/usr/share/sddm/themes
-SDDM_THEME=$(cat /etc/sddm.conf | grep 'Current' | sed -E 's/.*=//')
+SDDM_THEME_NAME=$(cat /etc/sddm.conf | grep 'Current' | sed -E 's/.*=//')
+SDDM_THEME_PATH=/usr/share/sddm/themes/$SDDM_THEME_NAME
 
-if ! [ $SDDM_THEME ]; then
+if ! [ $SDDM_THEME_NAME ]; then
     echo No theme found in /etc/sddm.conf
     echo You can find all theme names by executing $ ls $SDDM_THEME_PATH
     while true; do
-        echo -n Please specify your theme name: ; read SDDM_THEME
-        if ! test -d $SDDM_THEME_PATH/$SDDM_THEME; then
-            echo No theme named $SDDM_THEME found at $SDDM_THEME_PATH/
+        echo -n Please specify your theme name: ; read SDDM_THEME_NAME
+        if ! test -d $SDDM_THEME_PATH/$SDDM_THEME_NAME; then
+            echo No theme named $SDDM_THEME_NAME found at $SDDM_THEME_PATH/
         else
             break
         fi
     done
 fi
 
-SDDM_THEME_PATH=$SDDM_THEME_PATH/$SDDM_THEME
-
-if ! test -f $SDDM_THEME_PATH/.bg.png; then
-    echo creating symlink to .bg.png in $SDDM_THEME_PATH
-    echo
-    sudo ln -sf ~/.bg.png $SDDM_THEME_PATH/.bg.png
+if test -f $SDDM_THEME_PATH/.bg.png; then
+    sudo rm $SDDM_THEME_PATH/.bg.png
 fi
-sudo chmod 777 ~/.bg.png
+
+echo copying .bg.png to $SDDM_THEME_PATH
+echo
+sudo cp ~/.bg.png $SDDM_THEME_PATH/.bg.png
+sudo chmod 777 $SDDM_THEME_PATH/.bg.png
 
 echo creating sddm config
 cat $SDDM_THEME_PATH/theme.conf.user | sed -E 's/background=.*/background=.bg.png/' | sed -E 's/type=.*/type=image/' >> /tmp/theme.conf.user
