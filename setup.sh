@@ -56,6 +56,9 @@ fi
 sudo chmod 777 ~/.bg.png
 
 echo creating sddm config
+if [ ! -f $SDDM_THEME_PATH/theme.conf.user ]; then
+    sudo cp theme.conf theme.conf.user
+fi
 cat $SDDM_THEME_PATH/theme.conf.user | sed -E 's/background=.*/background=.bg.png/' | sed -E 's/type=.*/type=image/' >> /tmp/theme.conf.user
 sudo mv $SDDM_THEME_PATH/theme.conf.user $SDDM_THEME_PATH/theme.conf.user.prewpblur
 sudo mv /tmp/theme.conf.user $SDDM_THEME_PATH/
