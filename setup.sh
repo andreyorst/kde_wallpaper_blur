@@ -14,7 +14,13 @@ if ! test -f "$BIN_PATH/convert" ; then
     exit
 fi
 
-CURRENT_WP_PATH=$(cat ~/.config/plasma-org.kde.plasma.desktop-appletsrc | grep -E "^Image=(file)?" | head -n 1 | sed -E 's/Image=(file:\/\/)?//')
+if ! test -f "$BIN_PATH/journalctl" ; then
+    echo journalctl not found on your system, please use systemd.
+    exit
+fi
+
+qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript 'd = desktopForScreen(0); d.currentConfigGroup = Array("Wallpaper", "org.kde.image", "General"); print("cw=" + d.readConfig("Image"));'
+CURRENT_WP_PATH=$(journalctl -n 10 | grep -o 'cw=.*' | tail -n 1 | sed -E 's/cw=(file:\/\/)?//;s/"$//')
 
 if ! test -f ~/.bg.png; then
     if [ "$CURRENT_WP_PATH" ]; then
