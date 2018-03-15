@@ -60,6 +60,7 @@ if ! test -f $SDDM_THEME_PATH/.bg.png; then
     sudo ln -sf ~/.bg.png $SDDM_THEME_PATH/.bg.png
 fi
 sudo chmod 777 ~/.bg.png
+setfacl -m u:sddm:x /home/username
 
 echo creating sddm config
 if [ ! -f $SDDM_THEME_PATH/theme.conf.user ]; then
