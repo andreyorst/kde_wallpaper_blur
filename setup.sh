@@ -14,7 +14,13 @@ if ! test -f "$BIN_PATH/convert" ; then
     exit
 fi
 
-CURRENT_WP_PATH=$(cat ~/.config/plasma-org.kde.plasma.desktop-appletsrc | grep -E "^Image=(file)?" | head -n 1 | sed -E 's/Image=(file:\/\/)?//')
+if ! test -f "$BIN_PATH/journalctl" ; then
+    echo journalctl not found on your system, please use systemd.
+    exit
+fi
+
+qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript 'd = desktopForScreen(0); d.currentConfigGroup = Array("Wallpaper", "org.kde.image", "General"); print("cw=" + d.readConfig("Image"));'
+CURRENT_WP_PATH=$(journalctl -n 10 | grep -o 'cw=.*' | tail -n 1 | sed -E 's/cw=(file:\/\/)?//;s/"$//')
 
 if ! test -f ~/.bg.png; then
     if [ "$CURRENT_WP_PATH" ]; then
@@ -54,8 +60,12 @@ if ! test -f $SDDM_THEME_PATH/.bg.png; then
     sudo ln -sf ~/.bg.png $SDDM_THEME_PATH/.bg.png
 fi
 sudo chmod 777 ~/.bg.png
+setfacl -m u:sddm:x ~
 
 echo creating sddm config
+if [ ! -f $SDDM_THEME_PATH/theme.conf.user ]; then
+    sudo cp theme.conf theme.conf.user
+fi
 cat $SDDM_THEME_PATH/theme.conf.user | sed -E 's/background=.*/background=.bg.png/' | sed -E 's/type=.*/type=image/' >> /tmp/theme.conf.user
 sudo mv $SDDM_THEME_PATH/theme.conf.user $SDDM_THEME_PATH/theme.conf.user.prewpblur
 sudo mv /tmp/theme.conf.user $SDDM_THEME_PATH/
