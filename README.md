@@ -8,6 +8,8 @@ This script automatically detects when you change wallpaper in KDE Plasma, blurs
 
 You will need `inotify-tools` and `imagemagick` packages. Arch linux users can install it via `pacman -S inotify-tools imagemagick`. Other distros may include it by default. If not, check your distro wiki on how to install them.
 
+Also you will need `systemd`, `dbus`, and the system should be installed on a filesystem with [ACL](https://wiki.archlinux.org/index.php/Access_Control_Lists).
+
 ```bash
 $ git clone https://github.com/andreyorst/kde_wallpaper_blur.git ~/.kde_wallpaper_blur
 $ cd ~/.kde_wallpaper_blur
