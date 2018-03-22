@@ -14,13 +14,14 @@ if ! test -f "$BIN_PATH/convert" ; then
     exit
 fi
 
-if ! test -f "$BIN_PATH/journalctl" ; then
-    echo journalctl not found on your system, please use systemd.
-    exit
-fi
-
-qdbus org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript 'd = desktopForScreen(0); d.currentConfigGroup = Array("Wallpaper", "org.kde.image", "General"); print("cw=" + d.readConfig("Image"));'
-CURRENT_WP_PATH=$(journalctl -n 10 | grep -o 'cw=.*' | tail -n 1 | sed -E 's/cw=(file:\/\/)?//;s/"$//')
+curActivityId=$(qdbus org.kde.ActivityManager /ActivityManager/Activities CurrentActivity)
+while read containmentId; do 
+    lastDesktop=$(kreadconfig5 --file ~/.config/plasma-org.kde.plasma.desktop-appletsrc --group Containments --group $containmentId --key lastScreen)
+    activityId=$(kreadconfig5 --file ~/.config/plasma-org.kde.plasma.desktop-appletsrc --group Containments --group $containmentId --key activityId)
+    if [[ $lastDesktop == "0" ]] && [[ $activityId == $curActivityId ]] ; then
+        CURRENT_WP_PATH=$(kreadconfig5 --file ~/.config/plasma-org.kde.plasma.desktop-appletsrc --group Containments --group $containmentId --group Wallpaper --group org.kde.image --group General --key Image | sed -E 's/(file:\/\/)?//')
+    fi
+done <<< "$(grep -e '\[Containments]\[[0-9]*]\[Configuration]' ~/.config/plasma-org.kde.plasma.desktop-appletsrc | sed 's/\[Containments\]\[//;s/\]\[Configuration\]//')"
 
 if ! test -f ~/.bg.png; then
     if [ "$CURRENT_WP_PATH" ]; then
