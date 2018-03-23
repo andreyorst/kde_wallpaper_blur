@@ -21,7 +21,7 @@ while read containmentId; do
     if [[ $lastDesktop == "0" ]] && [[ $activityId == $curActivityId ]] ; then
         CURRENT_WP_PATH=$(kreadconfig5 --file ~/.config/plasma-org.kde.plasma.desktop-appletsrc --group Containments --group $containmentId --group Wallpaper --group org.kde.image --group General --key Image | sed -E 's/(file:\/\/)?//')
     fi
-done <<< "$(grep -e '\[Containments]\[[0-9]*]\[Configuration]' ~/.config/plasma-org.kde.plasma.desktop-appletsrc | sed 's/\[Containments\]\[//;s/\]\[Configuration\]//')"
+done <<< "$(grep -e '\[Containments]\[[0-9]*]\[Wallpaper]\[org.kde.image]\[General]' ~/.config/plasma-org.kde.plasma.desktop-appletsrc | sed 's/\[Containments\]\[//;s/]\[Wallpaper]\[org.kde.image]\[General]//')" 
 
 if ! test -f ~/.bg.png; then
     if [ "$CURRENT_WP_PATH" ]; then
