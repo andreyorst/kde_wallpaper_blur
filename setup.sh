@@ -15,13 +15,13 @@ if ! test -f "$BIN_PATH/convert" ; then
 fi
 
 curActivityId=$(qdbus org.kde.ActivityManager /ActivityManager/Activities CurrentActivity)
-while read containmentId; do 
+while read containmentId; do
     lastDesktop=$(kreadconfig5 --file ~/.config/plasma-org.kde.plasma.desktop-appletsrc --group Containments --group $containmentId --key lastScreen)
     activityId=$(kreadconfig5 --file ~/.config/plasma-org.kde.plasma.desktop-appletsrc --group Containments --group $containmentId --key activityId)
     if [[ $lastDesktop == "0" ]] && [[ $activityId == $curActivityId ]] ; then
         CURRENT_WP_PATH=$(kreadconfig5 --file ~/.config/plasma-org.kde.plasma.desktop-appletsrc --group Containments --group $containmentId --group Wallpaper --group org.kde.image --group General --key Image | sed -E 's/(file:\/\/)?//')
     fi
-done <<< "$(grep -e '\[Containments]\[[0-9]*]\[Wallpaper]\[org.kde.image]\[General]' ~/.config/plasma-org.kde.plasma.desktop-appletsrc | sed 's/\[Containments\]\[//;s/]\[Wallpaper]\[org.kde.image]\[General]//')" 
+done <<< "$(grep -e '\[Containments]\[[0-9]*]\[Wallpaper]\[org.kde.image]\[General]' ~/.config/plasma-org.kde.plasma.desktop-appletsrc | sed 's/\[Containments\]\[//;s/]\[Wallpaper]\[org.kde.image]\[General]//')"
 
 if ! test -f ~/.bg.png; then
     if [ "$CURRENT_WP_PATH" ]; then
@@ -38,9 +38,13 @@ if ! test -f ~/.bg.png; then
 fi
 
 SDDM_THEME_PATH=/usr/share/sddm/themes
-SDDM_THEME=$(cat /etc/sddm.conf | grep 'Current' | sed -E 's/.*=//')
+if [[ -f /etc/sddm.conf ]]; then
+    SDDM_THEME=$(grep 'Current=' /etc/sddm.conf | cut -f 2 -d '=')
+else
+    SDDM_THEME=''
+fi
 
-if ! [ $SDDM_THEME ]; then
+if [[ -z "$SDDM_THEME" ]]; then
     echo No theme found in /etc/sddm.conf
     echo You can find all theme names by executing $ ls $SDDM_THEME_PATH
     while true; do
