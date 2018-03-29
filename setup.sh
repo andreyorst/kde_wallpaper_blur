@@ -67,22 +67,33 @@ fi
 sudo chmod 777 ~/.bg.png
 setfacl -m u:sddm:x ~
 
+if ! test -f $SDDM_THEME_PATH/theme.conf.user.prewpblur; then
+    echo backuping sddm configuration files
+    SDDM_BACKUP=1
+    sudo mv $SDDM_THEME_PATH/theme.conf.user $SDDM_THEME_PATH/theme.conf.user.prewpblur
+fi
+
 echo creating sddm config
 if [ ! -f $SDDM_THEME_PATH/theme.conf.user ]; then
-    sudo cp theme.conf theme.conf.user
+    sudo cp $SDDM_THEME_PATH/theme.conf $SDDM_THEME_PATH/theme.conf.user
 fi
 cat $SDDM_THEME_PATH/theme.conf.user | sed -E 's/background=.*/background=.bg.png/' | sed -E 's/type=.*/type=image/' >> /tmp/theme.conf.user
-sudo mv $SDDM_THEME_PATH/theme.conf.user $SDDM_THEME_PATH/theme.conf.user.prewpblur
+
+# checking if backup exists
 sudo mv /tmp/theme.conf.user $SDDM_THEME_PATH/
 
-
-echo generating kscreenlockerrc file
 echo
 
 KSCREENLOCKER=~/.config/kscreenlockerrc
 
 if test -f ~/.config/kscreenlockerrc; then
-    mv $KSCREENLOCKER $KSCREENLOCKER.prewpblur
+    #checking for kscreenlockerrc backup
+    if ! test -f $KSCREENLOCKER.prewpblur; then
+        echo backuping kscreenlocker configuration files
+        KSCREENLOCKER_BACKUP=1
+        mv $KSCREENLOCKER $KSCREENLOCKER.prewpblur
+    fi
+    echo generating kscreenlockerrc file
     echo "[$Version]" > $KSCREENLOCKER
     echo $(grep "update_info" $KSCREENLOCKER.prewpblur) >> $KSCREENLOCKER
 else
@@ -113,20 +124,27 @@ echo
 ln -sf $(pwd)/wpblur.sh ~/.config/autostart-scripts/wpblur.sh
 echo script will start automatically upon next login
 
-cat <<EOF
-Backups created:
-$SDDM_THEME_PATH/theme.conf.user.prewpblur
-$KSCREENLOCKER.prewpblur
-
-EOF
+if [[ $SDDM_BACKUP || $KSCREENLOCKER_BACKUP ]]; then
+    echo
+    echo backups created:
+    if [[ $SDDM_BACKUP ]]; then
+        echo $SDDM_THEME_PATH/theme.conf.user.prewpblur
+    fi
+    if [[ $KSCREENLOCKER_BACKUP ]]; then
+        echo $KSCREENLOCKER.prewpblur
+    fi
+fi
 
 if ! pgrep -x "wpblur.sh" > /dev/null; then
+    echo
     echo starting script for current session
     $(pwd)/wpblur.sh &
 fi
 
 if [ $PROMPT ]; then
+    echo
     echo now please change your wallpaper
 else
+    echo
     echo ready to use
 fi

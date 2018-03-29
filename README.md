@@ -23,7 +23,18 @@ Installation script will create backup files called \*.prewpblur in various plac
 
 **Multi-monitor systems**: Please note that while different wallpapers can be set for different screens, only one background can be set for the lockscreen and SDDM. Therefore, this script will only use the wallpaper from your *Primary Display*.
 
-This software comes with no warranty.
+### Uninstall
+
+To uninstall script simply run:
+
+```bash
+$ cd ~/.kde_wallpaper_blur
+$ ./uninstall.sh
+```
+
+Or, if you choosen different path in installation section, execute script directly form there.
+
+This software comes with no warranty. Use at your own risk.
 
 ---
 
