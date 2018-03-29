@@ -15,5 +15,8 @@
   2. 
 
 <!-- If you want to attach your configuration files, like `~/.config/plasma-org.kde.plasma.desktop-appletsrc` and logs, such as `journalctl`, `xrandr`, `qdbus --version`, then they are welcome as uploaded *.txt files, as they may be huge, and it is simpler to read them in editor, and not in web browser. -->
+**Configuration files:**
+
+**Logs:**
 
 <!-- Please understand that if your issue cannot be reproduced, or explanations are not clear enoug to understand what you mean, issue may be closed, because it will much more difficult to fix this without usefull info. Thank you. -->
