@@ -21,10 +21,10 @@ No further manipulations should be needed, but if you run into some kind of trou
 
 Installation script will create backup files called \*.prewpblur in various places. Check out script output.
 
-Multi-monitor systems: Please note that while different wallpapers can be set for different screens, only one background can be set for the lockscreen and SDDM. Therefore, this script will only use the wallpaper from your *Primary Display*.
+**Multi-monitor systems**: Please note that while different wallpapers can be set for different screens, only one background can be set for the lockscreen and SDDM. Therefore, this script will only use the wallpaper from your *Primary Display*.
 
 This software comes with no warranty.
 
 ---
 
-Special thanks to [@agura-lex](https://github.com/agura-lex), for his patience and bash guidance
+Special thanks to [@agura-lex](https://github.com/agura-lex), for his patience and bash guidance, and [@kennethso168](https://github.com/kennethso168) for implementing activity detection, and lots of improvements.
