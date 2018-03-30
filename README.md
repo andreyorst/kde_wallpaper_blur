@@ -34,7 +34,7 @@ $ ./uninstall.sh
 
 Or, if you choosen different path in installation section, execute script directly form there.
 
-This software comes with no warranty. Use at your own risk.
+### This software comes with no warranty. Use at your own risk.
 
 ---
 
