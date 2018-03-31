@@ -24,27 +24,31 @@ function blur {
     blurWp "$CURRENT_WP_PATH"
 }
 
-if [ $(pidof -x wpblur.sh| wc -w) -gt 2 ]; then
-	echo wpblur already running, exiting
-    exit 1
-fi
-
-while true; do
-    inotifywait -q ~/.config/plasma-org.kde.plasma.desktop-appletsrc -e delete_self | while read; do
-        echo "~/.config/plasma-org.kde.plasma.desktop-appletsrc modified"
-        blur
-    done
-done &
-
-interface=org.kde.ActivityManager.Activities
-member=CurrentActivityChanged
-
-dbus-monitor --profile "interface='$interface',member='$member'" |
-while read -r line; do
-    if [[ $line = *"CurrentActivityChanged"* ]]; then
-        echo "Activity changed"
-        blur
+function run {
+    if [ $(pidof -x wpblur.sh| wc -w) -gt 2 ]; then
+        echo wpblur already running, exiting
+        exit 1
     fi
-done &
 
-sleep infinity
+    while true; do
+        inotifywait -q ~/.config/plasma-org.kde.plasma.desktop-appletsrc -e delete_self | while read; do
+            echo "~/.config/plasma-org.kde.plasma.desktop-appletsrc modified"
+            blur
+        done
+    done &
+
+    interface=org.kde.ActivityManager.Activities
+    member=CurrentActivityChanged
+
+    dbus-monitor --profile "interface='$interface',member='$member'" |
+    while read -r line; do
+        if [[ $line = *"CurrentActivityChanged"* ]]; then
+            echo "Activity changed"
+            blur
+        fi
+    done &
+
+    sleep infinity
+}
+
+run
