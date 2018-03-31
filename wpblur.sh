@@ -51,4 +51,8 @@ function run {
     sleep infinity
 }
 
-run
+if [ $# -eq 0 ]; then
+    run
+else
+    $1 $2
+fi
