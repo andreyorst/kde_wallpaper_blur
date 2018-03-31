@@ -14,20 +14,12 @@ if ! test -f "$BIN_PATH/convert" ; then
     exit
 fi
 
-curActivityId=$(qdbus org.kde.ActivityManager /ActivityManager/Activities CurrentActivity)
-while read containmentId; do
-    lastDesktop=$(kreadconfig5 --file ~/.config/plasma-org.kde.plasma.desktop-appletsrc --group Containments --group $containmentId --key lastScreen)
-    activityId=$(kreadconfig5 --file ~/.config/plasma-org.kde.plasma.desktop-appletsrc --group Containments --group $containmentId --key activityId)
-    if [[ $lastDesktop == "0" ]] && [[ $activityId == $curActivityId ]] ; then
-        CURRENT_WP_PATH=$(kreadconfig5 --file ~/.config/plasma-org.kde.plasma.desktop-appletsrc --group Containments --group $containmentId --group Wallpaper --group org.kde.image --group General --key Image | sed -E 's/(file:\/\/)?//')
-    fi
-done <<< "$(grep -e '\[Containments]\[[0-9]*]\[Wallpaper]\[org.kde.image]\[General]' ~/.config/plasma-org.kde.plasma.desktop-appletsrc | sed 's/\[Containments\]\[//;s/]\[Wallpaper]\[org.kde.image]\[General]//')"
-
 if ! test -f ~/.bg.png; then
+    CURRENT_WP_PATH=$(./wpblur.sh currentWpPath)
     if [ "$CURRENT_WP_PATH" ]; then
         echo blurring your current wallpaper
         echo
-        convert "$CURRENT_WP_PATH" -filter Gaussian -resize 5% -define filter:sigma=2.5 -resize 2000% -attenuate 0.2 +noise Gaussian ~/.bg.png
+        ./wpblur.sh blurWp "$CURRENT_WP_PATH"
         sleep 10
     else
         PROMPT=1
