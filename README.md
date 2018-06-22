@@ -1,4 +1,4 @@
-# HIS PROJECT IS NOT MAINTAINED ANMYMORE
+# THIS PROJECT IS NOT MAINTAINED ANMYMORE
 
 KDE PLasma 5.13 now includes quite similar feature. Though it is not automatic, like this script, yet it is stock, and not as performance hungry as this realisation. **USe it at your own risk (as always)*
 
